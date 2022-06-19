@@ -1,7 +1,8 @@
+import {Start} from './components/Start';
 import {useAppContext} from './store/store';
 
 function App() {
-    return <div className='App'>TEst</div>;
+    return <Start />;
 }
 
 export default App;
