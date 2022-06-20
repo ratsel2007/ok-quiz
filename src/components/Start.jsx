@@ -9,7 +9,7 @@ export const Start = () => {
     const [name, setName] = useState('');
     const [blockNumber, setblockNumber] = useState(1);
 
-    const {saveName, changeBlock} = useAppContext();
+    const {saveName, changeBlock, saveBlockName, changeFirst, changeSecond} = useAppContext();
 
     const handleSetName = (e) => {
         setName(e.target.value);
@@ -17,6 +17,7 @@ export const Start = () => {
 
     const handleChangeBlockNumber = (e) => {
         setblockNumber(e.target.value);
+        saveBlockName(e.target.value);
     };
 
     const handleSubmitForm = async (e) => {
@@ -24,27 +25,36 @@ export const Start = () => {
 
         const data = await axios.get(`http://localhost:3001/base${blockNumber}`);
 
-        const data2 = shuffleArray(data.data).slice(0, 5);
+        const data2 = shuffleArray(data.data.questions).slice(0, 5);
+
+        saveBlockName(data.data.title);
 
         saveName(name);
 
         changeBlock(data2);
+
+        changeFirst();
+
+        changeSecond();
     };
 
     return (
-        <Container maxWidth='xl'>
+        <Container maxWidth='xl' sx={{mt: '1rem'}}>
             <form onSubmit={handleSubmitForm}>
                 <Stack>
                     <TextField
                         id='outlined-basic'
+                        sx={{mb: '1rem'}}
                         label='Введите ФИО'
                         variant='outlined'
+                        required={true}
                         onChange={handleSetName}
                     />
                     <InputLabel id='demo-simple-select-label'>Выберите тему</InputLabel>
                     <Select
                         labelId='demo-simple-select-label'
                         id='demo-simple-select'
+                        sx={{mb: '1rem'}}
                         value={blockNumber}
                         label='Выберите тему'
                         onChange={handleChangeBlockNumber}>
